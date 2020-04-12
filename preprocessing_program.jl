@@ -27,5 +27,21 @@ end
 =#
 # dictionary: race (saba)
 
+for row in 1:nrows
+    race_dict = Dict()
+    race_dict["ASIAN"] = "1"
+    race_dict["BLACK OR AFRICAN AMERICAN"] = "2"
+    race_dict["WHITE"] = "3"
+        if haskey(race_dict, row)
+            print("$(race_dict[row])")
+        end
+    end
+
+
+
+
+
+   
+
 
 
