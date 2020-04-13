@@ -48,6 +48,21 @@ for row in test_array
 end
 println(test_array)
 
+race_array = collect(skipmissing(gbm_final_df.Race_Category))
+s = 0
+for row in race_array
+    global s += 1
+    if race_array[s] == "ASIAN"
+        race_array[s] = "1"
+    elseif race_array == "BLACK OR AFRICAN AMERICAN"
+        race_array[s] = "2"
+    else 
+        race_array = "3"
+    end
+        # replace(replace(gbm_final_df.Sex[x], "Male" => "1"), "Female" => "2")
+end
+println(race_array)
+
 #print(gbm_final_df.Sex)
 # dictionary: race (saba)
 # dictionary didn't do squat :( 
