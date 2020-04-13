@@ -25,30 +25,29 @@ print(gbm_final_df)
 
 
 
-# dictionary: sex (john)skipmissing  skipmissing
+# John: Assign each patient a numerical value based on their sex:
+# 1 = Male, 2 = Female
 
+test_array = Array{Union{String, Int64}}collect(skipmissing(gbm_final_df.Sex))
 
-
-#gbm_final_df[() .== "Male", :Sex]="1"
-#gbm_final_df[(gbm_final_df.Sex) .== "Female", :Sex]="2"
-
-# map(row -> "1", skipmissing(gbm_final_df.Sex))
-
-test_array = collect(skipmissing(gbm_final_df.Sex))
-
-k = 0
 for row in test_array
-    global k += 1
+    k = 1
     if test_array[k] == "Male"
         test_array[k] = "1"
     else
         test_array[k] = "2"
     end
-        # replace(replace(gbm_final_df.Sex[x], "Male" => "1"), "Female" => "2")
+    k += 1
 end
+
 println(test_array)
 
-#print(gbm_final_df.Sex)
+# Here are some other things that I tried: 
+    # gbm_final_df[() .== "Male", :Sex]="1"
+    # gbm_final_df[(gbm_final_df.Sex) .== "Female", :Sex]="2"
+    # map(row -> "1", skipmissing(gbm_final_df.Sex))
+    # replace(replace(gbm_final_df.Sex[x], "Male" => "1"), "Female" => "2")
+
 # dictionary: race (saba)
 # dictionary didn't do squat :( 
 #=for race_value in gbm_final_df
