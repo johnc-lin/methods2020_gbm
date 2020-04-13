@@ -11,20 +11,26 @@ gbm_df = CSV.File("$(Base.Filesystem.pwd())/gbm_final_data.csv", header = 1, foo
 gbm_final_df = gbm_df[:, [1,3,4,5,6,7,8,9,10]]
 
 # for every empty unit, replace with -1 (michelle)
-nrows, ncols = size(gbm_final_df)
+#=nrows, ncols = size(gbm_final_df)
 for row in 1:nrows
     for col in 1:ncols
-        Missings.replace(col, -1)
+        coalesce.(col, -1)
+        
     end
 end
-
-# dictionary: sex (john)
-
-#=for row in 1:nrows
-    gbm_final_df[:Sex] = convert(DataArray{Union(String, Int64), 1}, gbm_final_df[:Sex])
-    gbm_final_df[gbm_final_df[:Sex] .== "Male", :Sex] = 1
-    gbm_final_df[gbm_final_df[:Sex] .== "Female", :Sex] = 2
+print(gbm_final_df)
 =#
+
+
+
+# dictionary: sex (john)skipmissing  skipmissing
+gbm_final_df[(gbm_final_df.Sex) .== "Male", :Sex]="1"
+gbm_final_df[(gbm_final_df.Sex) .== "Female", :Sex]="2"
+#=for row in skipmissing(gbm_final_df.Sex)
+    replace(replace(row, "Male" => "1"), "Female" => "2")
+    print(row)
+end =#
+print(gbm_final_df.Sex)
 # dictionary: race (saba)
 
 
