@@ -20,7 +20,7 @@ print(gbm_final_df)
 # John: Assign each patient a numerical value based on their sex:
 # 1 = Male, 2 = Female
 
-test_array = Array{Union{String, Int64}}collect(skipmissing(gbm_final_df.Sex))
+test_array = collect(skipmissing(gbm_final_df.Sex))
 
 for row in test_array
     k = 1
