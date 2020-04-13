@@ -12,17 +12,9 @@ using Base
 gbm_df = CSV.File("$(Base.Filesystem.pwd())/gbm_final_data.csv", header = 1, footerskip = 0) |> DataFrame
 gbm_final_df = gbm_df[:, [1,3,4,5,6,7,8,9,10]]
 
-# for every empty unit, replace with -1 (michelle)
-#=nrows, ncols = size(gbm_final_df)
-for row in 1:nrows
-    for col in 1:ncols
-        coalesce.(col, -1)
-        
-    end
-end
+# for every missing unit, replace with -1 (michelle)
+gbm_final_df = coalesce.(gbm_final_df, -1)
 print(gbm_final_df)
-=#
-
 
 
 # John: Assign each patient a numerical value based on their sex:
