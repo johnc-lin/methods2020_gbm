@@ -28,28 +28,21 @@ for row in gbm_final_df.Sex
     end
 end
 
-println(gbm_final_df)
+# 1 = Asian, 2 = Black/African American, 3 = White
+s=0
+for row in gbm_final_df[!, 6]
+    global s += 1
+    if gbm_final_df[!, 6][s] == "ASIAN"
+        gbm_final_df[!, 6][s] = 1
+    elseif gbm_final_df[!, 6][s] == "BLACK OR AFRICAN AMERICAN"
+        gbm_final_df[!, 6][s] = 2
+    elseif gbm_final_df[!, 6][s] == "WHITE" 
+        gbm_final_df[!, 6][s] = 3
+    end
+end
 
-# Here are some other things that I tried: 
-    # gbm_final_df[() .== "Male", :Sex]="1"
-    # gbm_final_df[(gbm_final_df.Sex) .== "Female", :Sex]="2"
-    # map(row -> "1", skipmissing(gbm_final_df.Sex))
-    # replace(replace(gbm_final_df.Sex[x], "Male" => "1"), "Female" => "2")
-
-# dictionary: race (saba)
-# dictionary didn't do squat :( 
-#=for race_value in gbm_final_df
-    race_dict = Dict()
-    race_dict["ASIAN"] = "1"
-    race_dict["BLACK OR AFRICAN AMERICAN"] = "2"
-    race_dict["WHITE"] = "3"
-    race_dict["missing"] = "-1"
-        if haskey(race_dict, race_value)
-            print("$(race_dict[race_value])")
-        end
-    end 
-=#
-# print(gbm_final_df)
+println(gbm_final_df.Sex)
+println(gbm_final_df[!, 6])
 
 
 
