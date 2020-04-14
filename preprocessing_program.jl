@@ -45,6 +45,9 @@ end
 println(gbm_final_df.Sex)
 println(gbm_final_df[!, 6])
 
+#write the data frame into a CSV file
+CSV.write("gbm_pp_data.csv", gbm_final_df)
+
 
 
 
