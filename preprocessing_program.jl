@@ -14,7 +14,6 @@ gbm_final_df = gbm_df[:, [1,3,4,5,6,7,8,9,10]]
 
 # for every missing unit, replace with -1 (michelle)
 gbm_final_df = coalesce.(gbm_final_df, -1)
-#print(gbm_final_df)
 
 
 # John: Assign each patient a numerical value based on their sex:
@@ -24,7 +23,7 @@ for row in gbm_final_df.Sex
     global k += 1
     if gbm_final_df.Sex[k] == "Male"
         gbm_final_df.Sex[k] = 1
-    else
+    elseif gbm_final_df.Sex[k] == "Female"
         gbm_final_df.Sex[k] = 2
     end
 end
