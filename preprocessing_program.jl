@@ -42,8 +42,12 @@ for row in gbm_final_df[!, 6]
     end
 end
 
-println(gbm_final_df.Sex)
-println(gbm_final_df[!, 6])
+#println(gbm_final_df.Sex)
+#println(gbm_final_df[!, 6])
+
+
+CSV.write("/Users/sabaparacha/methods2020/gbm_ml/processed_data.csv", gbm_final_df)
+
 
 
 
