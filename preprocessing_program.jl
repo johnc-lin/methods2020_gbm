@@ -1,5 +1,4 @@
 # pre process data
-
 import Missings
 import Base
 
@@ -16,17 +15,23 @@ gbm_final_df = gbm_df[:, [4,5,6,7,8,9,10]]
 # for every missing unit, replace with -1
 gbm_final_df = coalesce.(gbm_final_df, -1)
 
-fraction_genome_altered = mean(gbm_final_df[!, 3])
+    # Assign each patient a numerical value based on their categorical data values:
+    # 1 = Male, 2 = Female
+    # 1 = Asian, 2 = Black/African American, 3 = White
 
-# John: Assign each patient a numerical value based on their sex:
-# 1 = Male, 2 = Female
-k=0
-for row in gbm_final_df.Sex
-    global k += 1
-    if gbm_final_df.Sex[k] == "Male"
-        gbm_final_df.Sex[k] = 1
-    elseif gbm_final_df.Sex[k] == "Female"
-        gbm_final_df.Sex[k] = 2
+    for k in 1:nrow(gbm_final_df)
+        if gbm_final_df.Sex[k] == "Male"
+            gbm_final_df.Sex[k] = 1
+        elseif gbm_final_df.Sex[k] == "Female"
+            gbm_final_df.Sex[k] = 2
+        end
+        if gbm_final_df[!, 4][k] == "ASIAN"
+            gbm_final_df[!, 4][k] = 1
+        elseif gbm_final_df[!, 4][k] == "BLACK OR AFRICAN AMERICAN"
+            gbm_final_df[!, 4][k] = 2
+        elseif gbm_final_df[!, 4][k] == "WHITE" 
+            gbm_final_df[!, 4][k] = 3
+        end
     end
 #=
 convert(AbstractFloat, gbm_final_df[!, 3])
