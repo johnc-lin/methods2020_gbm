@@ -33,7 +33,23 @@ gbm_final_df = coalesce.(gbm_final_df, -1)
         end
     end
 
-# println(gbm_final_df)
+# split into training and testing data set (about 80/20)
+gbm_training_df = first(gbm_final_df, 495)
+gbm_testing_df = last(gbm_final_df, 125)
+    
+# convert data fram into array
+gbm_training_array = convert(Matrix, gbm_training_df[:, :])
+gbm_testing_array = convert(Matrix, gbm_testing_df[:, :])
+# print(gbm_training_array)
 
+#load data into features and labels
+labels_training = convert(Matrix, gbm_training_df[:, 7])
+features_training = convert(Matrix, gbm_training_df[:, [1-6]])
+features_testing = convert(Matrix,gbm_testing_df[:, [1-6]])
+
+function loading_dataset()
+    return labels_training, features_training, features_testing
+end
+# println(gbm_final_df)
 #write the data frame into a CSV file
 #CSV.write("gbm_pp_data.csv", gbm_final_df)
