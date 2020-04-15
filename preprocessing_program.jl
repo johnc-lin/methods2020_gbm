@@ -3,18 +3,17 @@
 import Missings
 import Base
 
-
 using CSV
 using DataFrames
 using Missings
 using Base
 using Statistics
 
-
+function loading_data()
 gbm_df = CSV.File("$(Base.Filesystem.pwd())/gbm_final_data.csv", header = 1, footerskip = 0) |> DataFrame
-gbm_final_df = gbm_df[:, [1,3,4,5,6,7,8,9,10]]
+gbm_final_df = gbm_df[:, [4,5,6,7,8,9,10]]
 
-# for every missing unit, replace with -1 (michelle)
+# for every missing unit, replace with -1
 gbm_final_df = coalesce.(gbm_final_df, -1)
 
 fraction_genome_altered = mean(gbm_final_df[!, 3])
@@ -29,20 +28,6 @@ for row in gbm_final_df.Sex
     elseif gbm_final_df.Sex[k] == "Female"
         gbm_final_df.Sex[k] = 2
     end
-end
-
-# 1 = Asian, 2 = Black/African American, 3 = White
-s=0
-for row in gbm_final_df[!, 6]
-    global s += 1
-    if gbm_final_df[!, 6][s] == "ASIAN"
-        gbm_final_df[!, 6][s] = 1
-    elseif gbm_final_df[!, 6][s] == "BLACK OR AFRICAN AMERICAN"
-        gbm_final_df[!, 6][s] = 2
-    elseif gbm_final_df[!, 6][s] == "WHITE" 
-        gbm_final_df[!, 6][s] = 3
-    end
-end
 #=
 convert(AbstractFloat, gbm_final_df[!, 3])
 a=0
@@ -56,18 +41,21 @@ end
 #println(gbm_final_df[!, 6])
  =#
 
-#CSV.write("/Users/sabaparacha/methods2020/gbm_ml/processed_data.csv", gbm_final_df)
+   # println(gbm_final_df)
 
+    # split into training and testing data set (about 80/20)
+    gbm_training_df = first(gbm_final_df, 495)
+    gbm_testing_df = last(gbm_final_df, 125)
+    
+    # convert data fram into array
+    gbm_training_array = convert(Matrix, gbm_training_df[:, :])
+    gbm_testing_array = convert(Matrix, gbm_testing_df[:, :])
+   # print(gbm_training_array)
+
+   #load data into features and labels
+   labels_training = convert(Matrix, gbm_training_df[:, 10])
+   features_training = convert(Matrix, gbm_training_df[:, [4-9]])
+end
 
 #write the data frame into a CSV file
-CSV.write("gbm_pp_data.csv", gbm_final_df)
-
-#hello
-
-
-
-
-   
-
-
-
+#CSV.write("gbm_pp_data.csv", gbm_final_df)
