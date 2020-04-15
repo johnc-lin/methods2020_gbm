@@ -6,6 +6,7 @@ using CSV
 using DataFrames
 using Missings
 using Base
+using Statistics
 
 function loading_data()
 gbm_df = CSV.File("$(Base.Filesystem.pwd())/gbm_final_data.csv", header = 1, footerskip = 0) |> DataFrame
@@ -32,6 +33,18 @@ gbm_final_df = coalesce.(gbm_final_df, -1)
             gbm_final_df[!, 4][k] = 3
         end
     end
+#=
+convert(AbstractFloat, gbm_final_df[!, 3])
+a=0
+for missing_value in gbm_final_df[!, 3]
+    global a += 1
+    if missing_value[a] == -1
+        gbm_final_df[!, 3][a] = mean(gbm_final_df[!, 3])
+    end
+end
+#println(gbm_final_df.Sex)
+#println(gbm_final_df[!, 6])
+ =#
 
    # println(gbm_final_df)
 
