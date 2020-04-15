@@ -1,4 +1,5 @@
 # pre process data
+
 import Missings
 import Base
 
@@ -16,7 +17,7 @@ gbm_final_df = gbm_df[:, [1,3,4,5,6,7,8,9,10]]
 # for every missing unit, replace with -1 (michelle)
 gbm_final_df = coalesce.(gbm_final_df, -1)
 
-
+fraction_genome_altered = mean(gbm_final_df[!, 3])
 
 # John: Assign each patient a numerical value based on their sex:
 # 1 = Male, 2 = Female
