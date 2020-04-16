@@ -36,14 +36,16 @@ gbm_final_df = coalesce.(gbm_final_df, -1)
 function get_dataset()
     # split into training and testing features and labels (80/20)   
     training_features = gbm_final_df[1:floor(Int64, (0.8*size(gbm_final_df,1))), 1:end-1]
-    training_labels = gbm_final_df[1:floor(Int64, (0.8*size(gbm_final_df,1))), 1:end]
+    training_labels = gbm_final_df[1:floor(Int64, (0.8*size(gbm_final_df,1))), end]
     testing_features = gbm_final_df[1:floor(Int64, (0.2*size(gbm_final_df,1))), 1:end-1]
-    testing_labels = gbm_final_df[1:floor(Int64, (0.2*size(gbm_final_df,1))), 1:end]
+    testing_labels = gbm_final_df[1:floor(Int64, (0.2*size(gbm_final_df,1))), end]
+
     # convert data fram into array
     training_features_array = convert(Matrix, training_features)
-    training_labels_array = convert(Matrix, training_labels)
+    training_labels_array = convert(Array, training_labels)
     testing_features_array = convert(Matrix, testing_features)
-    testing_labels_array = convert(MathConstants, testing_labels)
+    testing_labels_array = convert(Array, testing_labels)
+
     #return values of the array
     return training_features_array, training_labels_array, testing_features_array, testing_labels_array
 end
