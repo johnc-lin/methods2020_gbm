@@ -9,4 +9,4 @@ tr_features, tr_labels, test_features, test_leables = get_dataset()
 model = build_forest(tr_labels, tr_features, 3, 100, 0.7, 5)
 
 # #apply model 
-print(apply_forest(model, test_features[1,:]))
+println(apply_forest(model, test_features[1,:]))
