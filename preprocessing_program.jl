@@ -49,4 +49,14 @@ function get_dataset()
     #return values of the array
     return training_features_array, training_labels_array, testing_features_array, testing_labels_array
 end
+
+function get_dataset_dataframes()
+    # split into training and testing features and labels (80/20)   
+    training_features = gbm_final_df[1:floor(Int64, (0.8*size(gbm_final_df,1))), 1:end-1]
+    training_labels = gbm_final_df[1:floor(Int64, (0.8*size(gbm_final_df,1))), end]
+    testing_features = gbm_final_df[1:floor(Int64, (0.2*size(gbm_final_df,1))), 1:end-1]
+    testing_labels = gbm_final_df[1:floor(Int64, (0.2*size(gbm_final_df,1))), end]
+
+    return training_features, training_labels, testing_features, testing_labels
+end
 # println(gbm_final_df)
