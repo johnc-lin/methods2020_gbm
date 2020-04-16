@@ -33,23 +33,18 @@ gbm_final_df = coalesce.(gbm_final_df, -1)
         end
     end
 
-# split into training and testing data set (about 80/20)
-gbm_training_df = first(gbm_final_df, 495)
-gbm_testing_df = last(gbm_final_df, 125)
-    
-# convert data fram into array
-gbm_training_array = convert(Matrix, gbm_training_df[:, :])
-gbm_testing_array = convert(Matrix, gbm_testing_df[:, :])
-# print(gbm_training_array)
-
-#load data into features and labels
-labels_training = convert(Matrix, gbm_training_df[:, 7])
-features_training = convert(Matrix, gbm_training_df[:, [1-6]])
-features_testing = convert(Matrix,gbm_testing_df[:, [1-6]])
-
-function loading_dataset()
-    return labels_training, features_training, features_testing
+function get_dataset()
+    # split into training and testing features and labels (80/20)   
+    training_features = gbm_final_df[1:floor(Int64, (0.8*size(gbm_final_df,1))), 1:end-1]
+    training_labels = gbm_final_df[1:floor(Int64, (0.8*size(gbm_final_df,1))), 1:end]
+    testing_features = gbm_final_df[1:floor(Int64, (0.2*size(gbm_final_df,1))), 1:end-1]
+    testing_labels = gbm_final_df[1:floor(Int64, (0.2*size(gbm_final_df,1))), 1:end]
+    # convert data fram into array
+    training_features_array = convert(Matrix, training_features)
+    training_labels_array = convert(Matrix, training_labels)
+    testing_features_array = convert(Matrix, testing_features)
+    testing_labels_array = convert(MathConstants, testing_labels)
+    #return values of the array
+    return training_features_array, training_labels_array, testing_features_array, testing_labels_array
 end
 # println(gbm_final_df)
-#write the data frame into a CSV file
-#CSV.write("gbm_pp_data.csv", gbm_final_df)
