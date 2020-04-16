@@ -2,17 +2,17 @@
 # For help, please visit https://predictmd.net
 
 using PredictMDExtra
-PredictMDExtra.import_all()
+#PredictMDExtra.import_all()
 
 using PredictMD
-PredictMD.import_all()
+#PredictMD.import_all()
 
 
 ### Begin project-specific settings
 
-"/Users/johnlin/methods2020/work-files-2020-jlin76/asg" = @__DIR__
+"/Users/johnlin/github/gbm_ml" = @__DIR__
 "/Users/johnlin/github/gbm_ml/output" = dirname(
-    joinpath(splitpath("/Users/johnlin/methods2020/work-files-2020-jlin76/asg")...)
+    joinpath(splitpath("/Users/johnlin/github/gbm_ml")...)
     )
 "/Users/johnlin/github/gbm_ml/output" = joinpath(
     "/Users/johnlin/github/gbm_ml",
@@ -238,12 +238,12 @@ show(
     )
 
 linear_regression_filename = joinpath(
-    PROJECT_OUTPUT_DIRECTORY,
+    /Users/johnlin/github/gbm_ml/output/Users/johnlin/github/gbm_ml/output,
     "models",
     "linear_regression.jld2",
     )
 
-PredictMD.save_model(linear_regression_filename, linear_regression)
+PredictMD.save_model(gbm_ml_linear_regression, linear_regression)
 
 
 
