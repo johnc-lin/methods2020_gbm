@@ -50,5 +50,3 @@ function get_dataset()
     return training_features_array, training_labels_array, testing_features_array, testing_labels_array
 end
 # println(gbm_final_df)
-#write the data frame into a CSV file
-#CSV.write("gbm_pp_data.csv", gbm_final_df)
