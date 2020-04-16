@@ -2,10 +2,10 @@
 # For help, please visit https://predictmd.net
 
 using PredictMDExtra
-#PredictMDExtra.import_all()
+PredictMDExtra.import_all()
 
 using PredictMD
-#PredictMD.import_all()
+PredictMD.import_all()
 
 
 ### Begin project-specific settings
