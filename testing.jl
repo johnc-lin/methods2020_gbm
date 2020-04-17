@@ -28,7 +28,7 @@ end
 # define cost function (kinda using least squares)
 function cost_function(features, labels)
     prediction = predict(test_features, d_weights)
-    least_sq = (sum((prediction - labels).^2))/(2*(size(features)[1]))
+    least_sq = (sum((prediction - labels).^2))/(size(features)[1])
     return least_sq
 end
 testing = cost_function(test_features, test_labels)
@@ -50,24 +50,24 @@ function gr_dsct_forest(features, labels, weights, learn_rate)
 
     # calculate the derivatives of each weight
     # 𝑓′(𝑊1)=−𝑥1(𝑦−(𝑊1𝑥1+𝑊2𝑥2+𝑊3𝑥3))
-    d_w1 = -1 * (cross(f1, (labels-prediction))) # WHY IS CROSS NOT DEFINED ? ERROR
-    d_w2 = -1 *(cross(f2, (labels-prediction)))
-    d_w3 = -1 *(cross(f3, (labels-prediction)))
-    d_w4 = -1 *(cross(f4, (labels-prediction)))
-    d_w5 = -1 *(cross(f5, (labels-prediction)))
-    d_w6 = -1 *(cross(f6, (labels-prediction)))
+    d_w1 = -1 * transpose(f1) * (labels-prediction)
+    d_w2 = -1 * transpose(f2) * (labels-prediction)
+    d_w3 = -1 * transpose(f3) * (labels-prediction)
+    d_w4 = -1 * transpose(f4) * (labels-prediction)
+    d_w5 = -1 * transpose(f5) * (labels-prediction)
+    d_w6 = -1 * transpose(f6) * (labels-prediction)
 
     # apply 
-    d_weights[1,1] -= (learn_rate * d_w1 / (size(features)))
-    d_weights[2,1] -= (learn_rate * d_w2 / (size(features)))
-    d_weights[3,1] -= (learn_rate * d_w3 / (size(features)))
-    d_weights[4,1] -= (learn_rate * d_w4 / (size(features)))
-    d_weights[5,1] -= (learn_rate * d_w5 / (size(features)))
-    d_weights[6,1] -= (learn_rate * d_w6 / (size(features)))
+    d_weights[1,1] -= (learn_rate * d_w1 / 619) # figure out a way to use the size of the features as an input
+    d_weights[2,1] -= (learn_rate * d_w2 / 619)
+    d_weights[3,1] -= (learn_rate * d_w3 / 619)
+    d_weights[4,1] -= (learn_rate * d_w4 / 619)
+    d_weights[5,1] -= (learn_rate * d_w5 / 619)
+    d_weights[6,1] -= (learn_rate * d_w6 / 619)
     return d_weights
 end
 
-test_2 = gr_dsct_forest(test_features, test_labels, d_weights, 0.5)
+ test_2 = gr_dsct_forest(test_features, test_labels, d_weights, 0.5)
 println(test_2)
 
 
