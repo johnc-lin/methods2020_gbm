@@ -16,7 +16,7 @@ gbm_final_df = coalesce.(gbm_final_df, -1)
 
     # Assign each patient a numerical value based on their categorical data values:
     # 1 = Male, 0 = Female
-    # 0 = Asian, 1 = Black/African American, 2 = White
+    # col 4, 5, 6 = asian, black, white binary classification
 
     for k in 1:nrow(gbm_final_df)
         if gbm_final_df.Sex[k] == "Male"
@@ -30,6 +30,8 @@ gbm_final_df = coalesce.(gbm_final_df, -1)
     for value in gbm_final_df[!, 4]
         if value == "ASIAN"
             push!(asian_category, 1)
+        elseif value == -1
+            push!(asian_category, -1)
         else
             push!(asian_category, 0)
         end
@@ -39,6 +41,8 @@ gbm_final_df = coalesce.(gbm_final_df, -1)
     for value in gbm_final_df[!, 4]
         if value == "BLACK OR AFRICAN AMERICAN"
             push!(aa_category, 1)
+        elseif value == -1
+            push!(aa_category, -1)
         else
             push!(aa_category, 0)
         end
@@ -48,6 +52,8 @@ gbm_final_df = coalesce.(gbm_final_df, -1)
     for value in gbm_final_df[!, 4]
         if value == "WHITE"
             push!(w_category, 1)
+        elseif value == -1
+            push!(w_category, -1)
         else
             push!(w_category, 0)
         end
