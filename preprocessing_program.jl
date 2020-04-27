@@ -15,23 +15,53 @@ gbm_final_df = gbm_df[:, [4,5,6,7,8,9,10]]
 gbm_final_df = coalesce.(gbm_final_df, -1)
 
     # Assign each patient a numerical value based on their categorical data values:
-    # 1 = Male, 2 = Female
-    # 1 = Asian, 2 = Black/African American, 3 = White
+    # 1 = Male, 0 = Female
+    # 0 = Asian, 1 = Black/African American, 2 = White
 
     for k in 1:nrow(gbm_final_df)
         if gbm_final_df.Sex[k] == "Male"
             gbm_final_df.Sex[k] = 1
         elseif gbm_final_df.Sex[k] == "Female"
-            gbm_final_df.Sex[k] = 2
-        end
-        if gbm_final_df[!, 4][k] == "ASIAN"
-            gbm_final_df[!, 4][k] = 1
-        elseif gbm_final_df[!, 4][k] == "BLACK OR AFRICAN AMERICAN"
-            gbm_final_df[!, 4][k] = 2
-        elseif gbm_final_df[!, 4][k] == "WHITE" 
-            gbm_final_df[!, 4][k] = 3
+            gbm_final_df.Sex[k] = 0
         end
     end
+
+    asian_category = []
+    for value in gbm_final_df[!, 4]
+        if value == "ASIAN"
+            push!(asian_category, 1)
+        else
+            push!(asian_category, 0)
+        end
+    end
+
+    aa_category = []
+    for value in gbm_final_df[!, 4]
+        if value == "BLACK OR AFRICAN AMERICAN"
+            push!(aa_category, 1)
+        else
+            push!(aa_category, 0)
+        end
+    end
+
+    w_category = []
+    for value in gbm_final_df[!, 4]
+        if value == "WHITE"
+            push!(w_category, 1)
+        else
+            push!(w_category, 0)
+        end
+    end
+
+    gbm_final_df = insertcols!(gbm_final_df, 4, asian = asian_category)
+    gbm_final_df = insertcols!(gbm_final_df, 5, black = aa_category)
+    gbm_final_df = insertcols!(gbm_final_df, 6, white = w_category)
+    gbm_final_df = gbm_final_df[:, [1,2,3,4,5,6,8,9,10]]
+
+    println(size(gbm_final_df))
+    println(gbm_final_df)
+
+            
 
 function get_dataset()
     # split into training and testing features and labels (80/20)   
@@ -41,9 +71,9 @@ function get_dataset()
     testing_labels = gbm_final_df[1:floor(Int64, (0.2*size(gbm_final_df,1))), end]
 
     # convert data fram into array
-    training_features_array = convert(Matrix, training_features)
+    training_features_array = convert(Array, training_features)
     training_labels_array = convert(Array, training_labels)
-    testing_features_array = convert(Matrix, testing_features)
+    testing_features_array = convert(Array, testing_features)
     testing_labels_array = convert(Array, testing_labels)
 
     #return values of the array
