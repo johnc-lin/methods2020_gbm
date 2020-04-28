@@ -11,8 +11,21 @@ using Statistics
 gbm_df = CSV.File("$(Base.Filesystem.pwd())/gbm_final_data.csv", header = 1, footerskip = 0) |> DataFrame
 gbm_final_df = gbm_df[:, [4,5,6,7,8,9,10]]
 
+# for every column create an average
+mean_1 = mean(skipmissing(gbm_final_df[!, 1]))
+mean_2 = mean(skipmissing(gbm_final_df[!, 2]))
+# mean_3 = mean(skipmissing(gbm_final_df[!, 3]))
+# mean_4 = mean(skipmissing(gbm_final_df[!, 4]))
+mean_5 = mean(skipmissing(gbm_final_df[!, 5]))
+mean_6 = mean(skipmissing(gbm_final_df[!, 6]))
+mean_7 = mean(skipmissing(gbm_final_df[!, 7]))
+
 # for every missing unit, replace with -1
-gbm_final_df = coalesce.(gbm_final_df, -1)
+gbm_final_df[!, 1] = coalesce.(gbm_final_df[!, 1], mean_1)
+gbm_final_df[!, 2] = coalesce.(gbm_final_df[!, 2], mean_2)
+gbm_final_df[!, 5] = coalesce.(gbm_final_df[!, 5], mean_5)
+gbm_final_df[!, 6] = coalesce.(gbm_final_df[!, 6], mean_6)
+gbm_final_df[!, 7] = coalesce.(gbm_final_df[!, 7], mean_7)
 
     # Assign each patient a numerical value based on their categorical data values:
     # 1 = Male, 0 = Female
@@ -26,13 +39,14 @@ gbm_final_df = coalesce.(gbm_final_df, -1)
         end
     end
 
+    # mean_3 = mean(skipmissing(gbm_final_df.Sex))
+    # gbm_final_df = coalesce.(gbm_final_df[!, 3], mean_3)
+
     asian_category = []
     for value in gbm_final_df[!, 4]
         if value == "ASIAN"
             push!(asian_category, 1)
-        elseif value == -1
-            push!(asian_category, -1)
-        else
+        elseif value == "WHITE" || "BLACK OR AFRICAN AMERICAN"
             push!(asian_category, 0)
         end
     end
@@ -41,9 +55,7 @@ gbm_final_df = coalesce.(gbm_final_df, -1)
     for value in gbm_final_df[!, 4]
         if value == "BLACK OR AFRICAN AMERICAN"
             push!(aa_category, 1)
-        elseif value == -1
-            push!(aa_category, -1)
-        else
+        elseif value == "ASIAN" || "WHITE"
             push!(aa_category, 0)
         end
     end
@@ -52,9 +64,7 @@ gbm_final_df = coalesce.(gbm_final_df, -1)
     for value in gbm_final_df[!, 4]
         if value == "WHITE"
             push!(w_category, 1)
-        elseif value == -1
-            push!(w_category, -1)
-        else
+        elseif value == "ASIAN" || "BLACK OR AFRICAN AMERICAN"
             push!(w_category, 0)
         end
     end
@@ -64,10 +74,15 @@ gbm_final_df = coalesce.(gbm_final_df, -1)
     gbm_final_df = insertcols!(gbm_final_df, 6, white = w_category)
     gbm_final_df = gbm_final_df[:, [1,2,3,4,5,6,8,9,10]]
 
-    println(size(gbm_final_df))
-    println(gbm_final_df)
+    # mean_a = mean(skipmissing(gbm_final_df[!, 4]))
+    # mean_aa = mean(skipmissing(gbm_final_df[!, 5]))
+    # mean_w = mean(skipmissing(gbm_final_df[!, 6]))
 
-            
+    # gbm_final_df = coalesce.(gbm_final_df[!, 4], mean_a)
+    # gbm_final_df = coalesce.(gbm_final_df[!, 5], mean_aa)
+    # gbm_final_df = coalesce.(gbm_final_df[!, 6], mean_w)
+
+    #  println(gbm_final_df)
 
 function get_dataset()
     # split into training and testing features and labels (80/20)   
@@ -95,4 +110,3 @@ function get_dataset_dataframes()
 
     return training_features, training_labels, testing_features, testing_labels
 end
-# println(gbm_final_df)
