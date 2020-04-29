@@ -19,9 +19,10 @@ function stat_forest(features, labels) # n_subfeatures, n_folds
     #r2 regression stats
     #r2 = nfoldCV_forest(labels, features, n_folds, n_subfeatures)
 
-    # MSE
+    # MSE and least squares
     prediction = predict_forest(features, labels)
-    least_sq = (sum((prediction - labels).^2))/(size(features)[1])
+    error_sq = (prediction-labels).^2
+    least_sq = (sum((error).^2))/(size(features)[1])
     
-    return least_sq
+    return error_sq, least_sq
 end
