@@ -115,3 +115,6 @@ function get_dataset_dataframes()
 
     return training_features, training_labels, testing_features, testing_labels
 end
+
+#write gbm_final_df into output.csv
+CSV.write("real_final_data.csv", gbm_final_df)
