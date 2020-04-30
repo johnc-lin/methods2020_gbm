@@ -1,5 +1,5 @@
 using DecisionTree
-using DataFrames
+using DataFrames, DelimitedFiles
 
 include("preprocessing_program.jl")
 tr_features, tr_labels, test_features, test_labels = get_dataset()
@@ -22,7 +22,18 @@ function stat_forest(features, labels) # n_subfeatures, n_folds
     # MSE and least squares
     prediction = predict_forest(features, labels)
     error_sq = (prediction-labels).^2
-    least_sq = (sum((error).^2))/(size(features)[1])
+    # least_sq = (sum((error).^2))/(size(features)[1])
     
-    return error_sq, least_sq
+    return error_sq
 end
+
+#write forest model stats and predictions in output DelimitedFiles
+# predictions
+forest_predictions = predict_forest(test_features, test_labels)
+println(forest_predictions)
+writedlm("forest_predictions.csv", forest_predictions, ',')
+
+# MSE
+forest_mse = stat_forest(test_features, test_labels)
+println(forest_mse)
+writedlm("forest_mse.csv", forest_mse, ',')
