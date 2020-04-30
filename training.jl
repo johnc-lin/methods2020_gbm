@@ -1,3 +1,4 @@
+using DelimitedFiles
 include("forest_model.jl")
 include("mv_regression.jl")
 
@@ -15,13 +16,26 @@ function train_mv(features, labels, weight, learn_rate, iters)
         push!(cost_history, cost)
 
         # print out the progress
-        if i % 10 == 0
-            print("iter = $i     weight = $weight    cost = $cost")
-            println()
-        end
+        # if i % 10 == 0
+        #     print("iter = $i     weight = $weight    cost = $cost")
+        #     println()
+        # end
         i += 1
     end
     return weight, cost_history
 end
 # tr_features = hcat(ones(size(tr_features,1), 1), tr_features)
-train_mv(tr_features, tr_labels, c_weights, 0.0001, 100000)
+ final_weights, cost_list = train_mv(tr_features, tr_labels, c_weights, 0.0001, 1000)
+
+#run the test files with final_weights
+#predictions
+mv_predicts = predict_mv(test_features, final_weights)
+println(mv_predicts)
+
+#MSE statistics
+mean_sq = error_sq(test_features, final_weights, test_labels)
+println(mean_sq)
+
+#write predictions and statistics into separate files
+writedlm("mv_predictions.csv", mv_predicts, ',')
+writedlm("mv_mse.csv", mean_sq, ',')

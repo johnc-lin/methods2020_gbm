@@ -1,5 +1,3 @@
-# using DataFrames
-
 include("preprocessing_program.jl")
 tr_features, tr_labels, test_features, test_labels = get_dataset()
 
@@ -16,6 +14,7 @@ w8 = 0.0
 w9 = 0.0
 
 c_weights = Array([w1;w2;w3;w4;w5;w6;w7;w8;w9]) #dimensions = 10x1
+# d_weights, cost_history = train_mv(tr_features, tr_labels, c_weights, 0.0001, 1000)
 
 function predict_mv(features, weights)
     model_predictions = features * weights
@@ -84,8 +83,3 @@ function gr_dsct_mv(features, labels, weights, learn_rate)
     # c_weights -= (learn_rate/619) .* transpose(transpose(prediction-labels)*features) 
     return c_weights
 end
-
-#  test_2 = gr_dsct_mv(test_features, test_labels, c_weights, 0.0003)
-# println(test_2)
-# test_3 = predict_mv(tr_features, c_weights)
-# print(test_3)
