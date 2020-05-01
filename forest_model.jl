@@ -1,6 +1,6 @@
 using DecisionTree
 using DataFrames, DelimitedFiles
-using Base
+using Base, CSV
 
 include("preprocessing_program.jl")
 tr_features, tr_labels, test_features, test_labels = get_dataset()
@@ -30,12 +30,13 @@ end
 
 #write forest model stats and predictions in output DelimitedFiles
 # predictions
-forest_predictions = predict_forest(test_features, test_labels)
-println(forest_predictions)
-
+predictions_list = predict_forest(test_features, test_labels)
+println(predictions_list)
 model_type = fill("Forest", (123,1))
+forest_predictions = DataFrame(Months = predictions_list, Model = model_type)
 
-writedlm("forest_predictions.csv", [forest_predictions model_type], ',')
+CSV.write("forest_predictions.csv",  forest_predictions)
+# writedlm("forest_predictions.csv", [forest_predictions model_type], ',')
 
 # MSE
 forest_mse = stat_forest(test_features, test_labels)
