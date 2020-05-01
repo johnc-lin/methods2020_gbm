@@ -31,6 +31,7 @@ end
 #write forest model stats and predictions in output DelimitedFiles
 # predictions
 predictions_list = predict_forest(test_features, test_labels)
+reshape(predictions_list, :, 1)
 println(predictions_list)
 model_type = fill("Forest", (123,1))
 forest_predictions = DataFrame(Months = predictions_list, Model = model_type)
