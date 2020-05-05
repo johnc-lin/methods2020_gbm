@@ -3,6 +3,7 @@ library(ggplot2)
 
 setwd("/Users/michellemai/gbm_ml/")
 
+
 gbm_data <- read.csv("real_final_data.csv")
 newname<-list("genome_altered","age","male","female","asian","black","white","disease_free","KPS","OS")
 names(gbm_data) <- newname
@@ -25,3 +26,7 @@ plot_5 + geom_point()
 plot_6 <- ggplot(data = gbm_data, mapping = aes(x = KPS, y = OS))
 plot_6 + geom_point()
 
+# gbm_data <- read.csv("final_predictions.csv")
+
+# plot_1 <- ggplot(data = gbm_data, mapping = aes(x = Model, y = Months))
+# plot_1 + geom_boxplot()

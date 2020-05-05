@@ -30,15 +30,14 @@ end
 
 #write forest model stats and predictions in output DelimitedFiles
 # predictions
-predictions_list = predict_forest(test_features, test_labels)
-println(predictions_list)
-model_type = fill("Forest", (123,1))
-forest_predictions = DataFrame(Months = predictions_list, Model = model_type)
+predictions = predict_forest(test_features, test_labels)
+forest_predictions = DataFrame(Months = predictions, Model = fill("Forest", 123))
 
 CSV.write("forest_predictions.csv",  forest_predictions)
 # writedlm("forest_predictions.csv", [forest_predictions model_type], ',')
 
 # MSE
-forest_mse = stat_forest(test_features, test_labels)
-println(forest_mse)
-writedlm("forest_mse.csv", forest_mse, ',')
+mse_values = stat_forest(test_features, test_labels)
+
+forest_mse = DataFrame(MSE = mse_values, Model = fill("Forest", 123))
+CSV.write("forest_mse.csv", forest_mse)
