@@ -43,6 +43,8 @@ mv_df = DataFrame(Months = mv_predicts, Model = fill("Multivariate", 123))
 
 first_df = vcat(original_df, mv_df)
 final_df = vcat(first_df, forest_df)
+final_df[!, :Survival] .= 1
+final_df[!, :NormalizedMonths] = log.(final_df.Months)
 # print(final_df)
 
 #write predictions and statistics into separate files
