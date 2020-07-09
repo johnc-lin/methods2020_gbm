@@ -23,9 +23,10 @@ function stat_forest(features, labels) # n_subfeatures, n_folds
     # MSE and least squares
     prediction = predict_forest(features, labels)
     error_sq = (prediction-labels).^2
+    error = prediction-labels
     # least_sq = (sum((error).^2))/(size(features)[1])
     
-    return error_sq
+    return error_sq, error
 end
 
 #write forest model stats and predictions in output DelimitedFiles
@@ -36,8 +37,17 @@ forest_predictions = DataFrame(Months = predictions, Model = fill("Forest", 123)
 CSV.write("forest_predictions.csv",  forest_predictions)
 # writedlm("forest_predictions.csv", [forest_predictions model_type], ',')
 
-# MSE
-mse_values = stat_forest(test_features, test_labels)
+# MSE, RMSE, MAE
+all_errors_sq, all_errors = stat_forest(test_features, test_labels)
+avg_mse = sum(all_errors_sq)/size(all_errors_sq,1)
+println(avg_mse)
 
-forest_mse = DataFrame(MSE = mse_values, Model = fill("Forest", 123))
-CSV.write("forest_mse.csv", forest_mse)
+avg_rmse = sqrt(avg_mse)
+println(avg_rmse)
+
+abs_errors = abs.(all_errors)
+mae = sum(abs_errors)/size(all_errors,1)
+println(mae)
+
+# forest_mse = DataFrame(MSE = mse_values, Model = fill("Forest", 123))
+# CSV.write("forest_mse.csv", forest_mse)

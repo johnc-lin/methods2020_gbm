@@ -31,8 +31,21 @@ end
 function error_sq(features, weights, labels)
     predictions = predict_mv(features, weights)
     error_sq = (predictions - labels).^2
-    return error_sq
+    error = predictions - labels
+    return error_sq, error
 end
+
+# return the average MSE, RMSE, and MAE
+all_errors_sq, all_errors = error_sq(test_features, c_weights, test_labels)
+avg_mse = sum(all_errors_sq)/size(all_errors_sq,1)
+println(avg_mse)
+
+avg_rmse = sqrt(avg_mse)
+println(avg_rmse)
+
+abs_errors = abs.(all_errors)
+mae = sum(abs_errors)/size(all_errors,1)
+println(mae)
 
 # define cost function (kinda using least squares)
 function cost_function_mv(features, labels)
